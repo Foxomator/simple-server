@@ -1,0 +1,44 @@
+.header{
+    width: 100%;
+    background-color: #213769;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+    
+}
+.nav{
+    width: 100%;
+    background-color: #420420;
+    padding: 10px;
+    display: flex;
+    flex-direction: row;
+}
+a.in_nav{
+    color:yellow;
+}
+a{
+    margin: auto;
+    color: azure;
+    padding: 20px;
+}
+body{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: lightslategray;
+}
+h1{
+    color: darkslateblue;
+    font-size: 50px;
+}
+table{
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+table, td, tr{
+    border: 1px yellowgreen solid;
+    padding: 20px;
+}
+.list_uczen{
+    pointer-events: none;
+}

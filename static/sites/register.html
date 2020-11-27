@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <div class="header">
+        <a href="/"> main</a>
+        <a href="./register"> register</a>
+        <a href="./login"> login</a>
+        <a href="./admin"> admin</a>
+        <a href="./logout"> wyloguj</a>
+    </div>
+
+    <h1> Rejestrowanie</h1>
+
+    <form action="/register" method="POST">
+        <label for="login"> Login: </label>
+        <input type="text" id="login" name="login"> <br>
+        <label for="password"> Password: </label>
+        <input type="password" id="password" name="password"> <br>
+        <label for="wiek"> Wiek </label>
+        <select name="wiek" id="wiek">
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
+        </select> <br>
+        <label for="uczen"> Uczeń </label>
+        <input type="checkbox" name="uczen" id="uczen" value="true"> <br>
+        <label for="sex"> Płeć</label>
+        M
+        <input type="radio" name="sex" id="sex_male" value="male" checked>
+        K
+        <input type="radio" name="sex" id="sex_female" value="female"> <br>
+
+        <button type="submit" value="submit"> Submit</button>
+
+    </form>
+</body>
+
+</html>
