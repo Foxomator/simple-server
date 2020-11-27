@@ -10,7 +10,7 @@ var logins_table = [
     { id: 3, login: "BBBBB", password: "tynojaniewiem", uczen: true, wiek: 15, sex: false }
 ]
 var next_id = 4;
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 //Parse'owanie 
 
