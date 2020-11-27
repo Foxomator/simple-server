@@ -3,7 +3,7 @@
 var express = require("express")
 var app = express()
 var path = require("path")
-var adminlogged = true;
+var adminlogged = false;
 var logins_table = [
     { id: 1, login: "Radek", password: "zaq1@WSX", uczen: true, wiek: 18, sex: true },
     { id: 2, login: "AAAA", password: "papiesh", uczen: false, wiek: 10, sex: true },
@@ -73,37 +73,53 @@ app.get("/login", function (req, res) {
 })
 app.post("/login", function (req, res) {
     console.log(logins_table)
-    var wrong = false;
+    var wrong = true;
     for (let j = 0; j < logins_table.length; j++) {
         if (req.body.login == logins_table[j].login && req.body.password == logins_table[j].password) {
             adminlogged = true;
+            wrong = false;
             break;
         }
-        else {
-            wrong = true;
-        }
     }
-    if (wrong == true) {
-        res.sendFile(path.join(__dirname + "/static/sites/admin_denied.html"))
+    if (wrong) {
+        res.send('Nieporawne logowanie')
     }
     else {
-        res.redirect("./admin")
+        res.redirect("/admin")
     }
 })
 app.get("/admin_granted_sort", function (req, res) {
-    res.send(admin_sort_create())
+    if (adminlogged == false) {
+        res.sendFile(path.join(__dirname + "/static/sites/admin_denied.html"))
+    }
+    else {
+        res.send(admin_sort_create('decrease'))
+    }
 })
 app.post("/admin_granted_sort", function (req, res) {
     // var order = req.body.kolejnosc
-    console.log('aaaa')
-    console.log(req.body.kolejnosc)
-    res.send(admin_sort_create(req.body.kolejnosc))
+    if (adminlogged == false) {
+        res.sendFile(path.join(__dirname + "/static/sites/admin_denied.html"))
+    }
+    else {
+        res.send(admin_sort_create(req.body.kolejnosc))
+    }
 })
 app.get("/admin_granted_list", function (req, res) {
-    res.send(admin_list_create())
+    if (adminlogged == false) {
+        res.sendFile(path.join(__dirname + "/static/sites/admin_denied.html"))
+    }
+    else {
+        res.send(admin_list_create())
+    }
 })
 app.get("/admin_granted_gender", function (req, res) {
-    res.send(admin_gender_create())
+    if (adminlogged == false) {
+        res.sendFile(path.join(__dirname + "/static/sites/admin_denied.html"))
+    }
+    else {
+        res.send(admin_gender_create())
+    }
 })
 app.get("/logout", function (req, res) {
     if (adminlogged) {
@@ -159,19 +175,21 @@ function admin_list_create() {
 }
 function admin_sort_create(kolejnosc) {
     console.log(kolejnosc)
-    var everything = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=\'device-width\', initial-scale=1.0"><title>Sort</title><link rel="stylesheet" href="../css/style.css"></head><body><div class="header"><a href="/"> main</a><a href="./register"> register</a><a href="./login"> login</a><a href="./admin"> admin</a></div><h1> To jest strona admina</h1><div class="nav"><a class="in_nav" href="./admin_granted_list"> List </a><a class="in_nav" href="./admin_granted_sort"> Sort </a><a class="in_nav" href="./admin_granted_gender"> Gender </a></div><form id="kolejnosc" onchange="this.submit()"> Malejąco <input type="radio" name="kolejnosc" value="decrease" #checked1>Rosnąco<input type="radio" name="kolejnosc"  value="increase" #checked2></form> <br>'
+    var everything = '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=\'device-width\', initial-scale=1.0"><title>Sort</title><link rel="stylesheet" href="../css/style.css"></head><body><div class="header"><a href="/"> main</a><a href="./register"> register</a><a href="./login"> login</a><a href="./admin"> admin</a></div><h1> To jest strona admina</h1><div class="nav"><a class="in_nav" href="./admin_granted_list"> List </a><a class="in_nav" href="./admin_granted_sort"> Sort </a><a class="in_nav" href="./admin_granted_gender"> Gender </a></div><form id="kolejnosc" onchange="this.submit()" method="POST"><label for="decrease"> Malejąco </label><input type="radio" name="kolejnosc" value="decrease" id="decrease" #checked1><label for="increase"> Rosnąco </label><input type="radio" name="kolejnosc"  value="increase" id="increase" #checked2></form> <br>'
     var table = "<table>";
     var sortcopy = [...logins_table]
     if (kolejnosc == "decrease") {
-        everything.replace("#checked1", "checked")
+        everything = everything.replace("#checked1", "checked")
+        everything = everything.replace("#checked2", "")
         sortcopy.sort(function (a, b) {
-            return parseFloat(a.wiek) - parseFloat(b.wiek);
+            return parseFloat(b.wiek) - parseFloat(a.wiek);
         });
     }
     else {
-        everything.replace("#checked2", "checked")
+        everything = everything.replace("#checked2", "checked")
+        everything = everything.replace("#checked1", "")
         sortcopy.sort(function (a, b) {
-            return parseFloat(b.wiek) - parseFloat(a.wiek);
+            return parseFloat(a.wiek) - parseFloat(b.wiek);
         });
     }
     for (let i = 0; i < sortcopy.length; i++) {
